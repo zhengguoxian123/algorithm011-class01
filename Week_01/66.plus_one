@@ -1,0 +1,40 @@
+```
+class Solution {
+public:
+    vector<int> plusOne(vector<int>& digits) {
+
+        for (int i = digits.size() -1 ;i >= 0; i--) {
+            if(digits[i] < 9) {
+                digits[i] += 1;
+                return digits;
+            }
+            digits[i] = 0;
+        }
+        
+        vector<int> res = vector<int>(digits.size() + 1, 0);
+        res[0] = 1;
+        return res;
+    }
+};
+
+// 思路1+时空复杂度：
+// 看最后一位，如果小于9，直接返回，如果等于9，该位置0，看前一位是否小于9，如果小于，该位+1,然后直接返回,否则，该位置0，看前一位，最终的话，如果不在循环中返回，那么新建一个向量，前前面赋为0即可。
+// 时间O(n)
+// 空间O(1)或者O(n)
+// 参考：https://github.com/MisterBooo/LeetCodeAnimation/blob/master/0066-Plus-One/Article/0066-Plus-One.md
+// 题解：
+    // vector<int> plusOne(vector<int>& digits) {
+
+    //     for (int i = digits.size() -1 ;i >= 0; i--) {
+    //         if(digits[i] < 9) {
+    //             digits[i] += 1;
+    //             return digits;
+    //         }
+    //         digits[i] = 0;
+    //     }
+        
+    //     vector<int> res = vector<int>(digits.size() + 1, 0);
+    //     res[0] = 1;
+    //     return res;
+    // }
+```

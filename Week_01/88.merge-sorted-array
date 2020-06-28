@@ -1,0 +1,75 @@
+```
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int p1 = m -1;
+        int p2 = n -1;
+        int p = m + n -1;
+
+        while (p1 >= 0 && p2 >= 0) {
+            nums1[p--] = (nums1[p1] < nums2[p2]) ? nums2[p2--] : nums1[p1--];
+        }
+
+        while (p1 >= 0) {
+            nums1[p--] = nums1[p1--];
+        }
+        while (p2 >= 0) {
+            nums1[p--] = nums2[p2--];
+        }
+    }
+};
+
+// 思路1+ 时空复杂度：
+// 参考：
+// 题解：
+
+// 思路2+ 时空复杂度：
+// 双指针，从前往后，那个剩余的话，再补进去
+// 由于新开辟了空间，所以时间复杂度O(n)
+// 时间复杂度O(n)
+// 4ms, 72%
+// 参考：https://leetcode-cn.com/problems/merge-sorted-array/solution/he-bing-liang-ge-you-xu-shu-zu-by-leetcode/
+// 题解：
+    // void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    //     int p1, p2, p;
+    //     p1 = p2 = p = 0;
+
+    //     vector<int> nums1_copy = nums1;
+
+    //     while (p1 <= m - 1 && p2 <= n - 1) {
+    //         nums1[p++] = (nums1_copy[p1] < nums2[p2])? 
+    //                       nums1_copy[p1++] : nums2[p2++];
+    //     }
+    //     while (p1 <= m -1) {
+    //         nums1[p++] = nums1_copy[p1++];
+    //     }
+    //     while (p2 <= n -1) {
+    //         nums1[p++] = nums2[p2++];
+    //     }
+    // }
+
+// 思路3+ 时空复杂度：
+// 思路：双指针，从后往前,还有剩余的话，再补进去
+// 时间复杂度O(n)
+// 空间复杂度O(1)
+// 4ms 72%
+// 参考：https://www.youtube.com/watch?v=JcJemWZLs8s
+// 图解: https://leetcode-cn.com/problems/merge-sorted-array/solution/he-bing-liang-ge-you-xu-shu-zu-by-leetcode/
+// 题解：
+    //  void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    //     int p1 = m -1;
+    //     int p2 = n -1;
+    //     int p = m + n -1;
+
+    //     while (p1 >= 0 && p2 >= 0) {
+    //         nums1[p--] = (nums1[p1] < nums2[p2]) ? nums2[p2--] : nums1[p1--];
+    //     }
+
+    //     while (p1 >= 0) {
+    //         nums1[p--] = nums1[p1--];
+    //     }
+    //     while (p2 >= 0) {
+    //         nums1[p--] = nums2[p2--];
+    //     }
+    // }
+```

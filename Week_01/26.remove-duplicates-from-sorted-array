@@ -1,0 +1,53 @@
+```
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if (nums.empty()) return 0;
+
+        int slow, fast;
+        slow = fast = 0;
+        while (fast < nums.size()) {
+            if (nums[slow] == nums[fast]) {
+                fast++;
+            } else {
+                slow++;
+                nums[slow] = nums[fast];
+                fast++;
+            }
+        }
+        return slow + 1;
+    }
+};
+
+// 审题：
+// 你不需要考虑数组中超出新长度后面的元素，所以你需要返回正确的长度就行，并且把东西往前移动
+
+// 思路1+时空复杂度+运行情况(时间+击败多少):
+// 思路：双指针，按照动画，快慢指针刚开始都指向第一个，如果相同，快指针向前一步，如果不同，两个指针都向前一步，如果快指针到到末尾，那么慢指针+1就是当前数组的长度
+// 需要注意数组为空的情况
+// 时间复杂度O(n)
+// 空间复杂度O(1),没有新建数组
+// 12 ms,击败98%
+// 参考动画+解释(看动画+背诵，否则就不知道为什么)：
+// https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/solution/shi-ping-dong-hua-jie-xi-bao-ni-dong-by-novice2mas/
+// https://github.com/azl397985856/leetcode/blob/master/problems/26.remove-duplicates-from-sorted-array.md
+// 题解:
+    // int removeDuplicates(vector<int>& nums) {
+    //     if(nums.size() == 0) return 0;
+    //     int slow,fast;
+    //     slow = fast = 0;
+    //     while (fast < nums.size()) {
+    //         if (nums[slow] == nums[fast]) {
+    //             fast++;
+    //         } else {
+    //             slow++;
+    //             nums[slow] = nums[fast];
+    //             fast++;
+    //         }
+    //     }
+    //     return slow + 1;
+    // }
+
+
+```
+
