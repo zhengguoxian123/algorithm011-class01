@@ -1,59 +1,65 @@
 ```
 class Solution {
 public:
-    vector<int> twoSum(vector<int>& nums, int target) {
+    bool isAnagram(string s, string t) {
+        if (s.size() != t.size()) return false;
         
-        unordered_map<int, int> indies;
-        for (int i = 0; i < nums.size(); i++) {
-            indies[nums[i]] = i;
+        unordered_map<char, int> counts;
+        for (int i = 0; i < s.size(); i++) {
+            counts[s[i]]++;
+            counts[t[i]]--;
         }
-
-        for (int i = 0; i < nums.size(); i++) {
-            int two = target - nums[i];
-            if(indies.count(two) && indies[two] != i) {
-                return {i, indies[two]};
-            }
+        for (auto count : counts) {
+            if (count.second) return false;
         }
-        return {};
+        return true;
     }
 };
 
-// 思路1+时间复杂度：
-// 暴力方法：for(int i = 0; i <nums.size();i++ ){for(int j = i+1; j< nums.size(); j++)}{...}
-// 时间复杂度O(n^2)
-// 参考：https://www.youtube.com/watch?v=tNtk_rwbaIk
+
+
+
+
+
+// 思路1+时空复杂度：
+// 异位词：字符出现的频次都是一样的
+// 审题：大小写是否敏感
+//暴力法.分别sort完看是否相等
+// O(NlogN)
+// 击败5%
 // 题解：
-// vector<int> twoSum(vector<int>& nums, int target) {
-//         for (int i = 0; i < nums.size(); i++) {
-//             for (int j = i + 1; j <nums.size(); j++) {
-//                 int sum  = nums[i] + nums[j];
-//                 if (sum == target) {
-//                     return {i, j};
-//                 } 
-//             }
-//         }
-//         return {};
+// class Solution {
+// public:
+//     bool isAnagram(string s, string t) {
+//         sort(s.begin(), s.end());
+//         sort(t.begin(), t.end());
+//         return s == t;
 //     }
+// };
+// 参考：极客大学 第二周第5课
 
-// 思路2+时间复杂度:
-// 使用unordered_map进行for循环存进去，它的键为数组的值，它的值为数组的位置
-// 然后目标减去数组的值，看结果是否在map中能够找到，能够找到就返回，因为一个元素不能用2次，所以结果的位置必须不和刚才那个数组的位置相同。
-// 时间复杂度：O(n)
-// 参考：https://www.youtube.com/watch?v=tNtk_rwbaIk
-// 题解:
 
-// vector<int> twoSum(vector<int>& nums, int target) {
-//         unordered_map<int, int> indies;
-//         for (int i = 0; i < nums.size(); i++){
-//             indies[nums[i]] = i;
+// 思路2+时空复杂度：
+// hash table 先放进去，再用另一个进行减去即可。
+// 时间复杂度O(n) 超过59%
+// 空间复杂度O(n)
+// 题解：
+// class Solution {
+// public:
+//     bool isAnagram(string s, string t) {
+//         if(s.size() != t.size()) return false;
+//         const int n = s.size();
+//         unordered_map<char, int> counts;
+//         for (int i = 0; i < n; i++) {
+//             counts[s[i]]++;
+//             counts[t[i]]--;
 //         }
-
-//         for(int i = 0; i < nums.size(); i++){
-//             int left = target - nums[i];
-//             if(indies.count(left) && indies[left] != i){
-//                 return {i, indies[left]};
-//             }
+//         for (auto count : counts) {
+//             if (count.second) return false;
 //         }
-//         return {};
+//         return true;
 //     }
+// };
+// 参考：极客大学 第二周第5课
+//https://leetcode.com/problems/valid-anagram/discuss/66519/2-C%2B%2B-Solutions-with-Explanations
 ```
