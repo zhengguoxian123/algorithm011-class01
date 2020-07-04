@@ -1,0 +1,122 @@
+```
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if (n < 7) return n;
+        vector<int> un(1,1);
+        
+        int i = 0, j = 0, k = 0;
+        while (--n) {
+            int t = min(un[i]* 2, min(un[j] * 3, un[k] * 5));
+            un.push_back(t);
+            if (t == un[i] * 2) i++;
+            if (t == un[j] * 3) j++;
+            if (t == un[k] * 5) k++;
+        }
+        return un.back();
+    }
+};
+
+
+
+// 思路1+时空复杂度：
+// 什么叫丑数呢？只包含2/3/5因子的叫丑数
+// 一个丑数，成语2/3/5都是丑数，所以从小到大进行排列，输出就可以
+// O(n)
+// 题解：
+// 参考：
+//https://leetcode-cn.com/problems/chou-shu-lcof/solution/chou-shu-ii-qing-xi-de-tui-dao-si-lu-by-mrsate/
+// https://www.bilibili.com/video/BV17i4y187gR?from=search&seid=14210992874317273780
+```
+```
+class Solution {
+public:
+    bool isUgly(int num) {
+        if (num == 0) return false;
+        
+        const vector<int> factors = {2, 3, 5};
+        for (const int factor : factors) {
+            while (num % factor == 0) num /= factor;
+        }
+        return num == 1;
+    }
+};
+
+// 思路1+ 时空复杂度：
+// 把这个数用2,3,5给除掉，如果结果是1，那就是丑数
+// O(logN)
+// 题解：
+// class Solution {
+// public:
+//     bool isUgly(int num) {
+//         if (num == 0) return false;
+        
+//         const vector<int> factors = {2, 3, 5};
+//         for (const int factor : factors) {
+//             while (num % factor == 0) num /= factor;
+//         }
+//         return num == 1;
+//     }
+// };
+// 参考(huahua)：
+// https://www.youtube.com/watch?v=1wpe7yeqZd0
+```
+```
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        if (n < 7) return n;
+        vector<int> un(1,1);
+
+        int i = 0, j = 0, k = 0;
+        while (--n) {
+            int t = min(un[i] * 2, min(un[j] * 3, un[k] * 5));
+            un.push_back(t);
+            if (t == un[i] * 2) i++;
+            if (t == un[j] * 3) j++;
+            if (t == un[k] * 5) k++;
+        }
+        return un.back();   
+    }
+};
+
+
+
+// 思路+时空复杂度：
+// 题解：
+// 参考：
+// 剑指 Offer 49. 丑数的解答
+```
+```
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        vector<int> un(1,1);
+        
+        vector<int> pos(primes.size(), 0);
+        
+        while (--n) {
+            int min_num = INT_MAX;
+            for (int i = 0; i < primes.size(); i++) {
+                min_num = min(min_num, un[pos[i]] * primes[i]);
+            }
+            un.push_back(min_num);
+            for (int i = 0; i < primes.size(); i++) {
+                if (min_num == un[pos[i]] * primes[i]) pos[i]++;
+            }
+
+        }
+        return un.back();
+    }
+};
+
+
+
+// 思路1+ 时空复杂度：
+// 时间O(N)
+// 空间O(N)
+// 题解：
+// 参考：
+// https://leetcode.com/problems/super-ugly-number/discuss/76331/Clear-c%2B%2B-solution-inspired-by-Ugly-Number-II
+// 参考94题，变形题
+```

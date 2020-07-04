@@ -1,0 +1,99 @@
+```
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> count;
+        int max_freq  = 1;
+        for (int i = 0; i < nums.size(); i++) {
+            max_freq = max(max_freq, ++count[nums[i]]);
+        }
+        
+        unordered_map<int, vector<int>> bucket;
+        for (auto cn : count) {
+            bucket[cn.second].push_back(cn.first);
+        }
+        vector<int> ans;
+        for (int i = max_freq; i >= 1; i--) {
+            auto it = bucket.find(i);
+            if (it == bucket.end()) continue;
+            ans.insert(ans.end(), it->second.begin(), it->second.end());
+            if (ans.size() == k) return ans;
+        }
+        return ans;
+    }
+};
+
+// top K非常重要！！！
+// 思路1+时空复杂度：
+// 哈希表+优先队列
+// 时间O(Nlog(K))
+// 空间O(K)
+// 题解：
+// class Solution {
+// public:
+//     vector<int> topKFrequent(vector<int>& nums, int k) {
+//         // 小顶堆
+//         priority_queue<pair<int, int>, vector<pair<int, int>>, 
+//         greater<pair<int,int>>> pq;
+//         unordered_map<int, int> cnt;
+        
+//         for (auto num : nums) cnt[num]++;
+//         for (auto kv : cnt) {
+//             pq.push({kv.second, kv.first});
+//             while (pq.size() > k) pq.pop();
+//         }
+
+//         vector<int> res;
+//         while (!pq.empty()) {
+//             res.push_back(pq.top().second);
+//             pq.pop();
+//         }
+//         return res;
+//     }
+// };
+// 优先队列怎么写，优先队列pop是什么？如何pop()
+// https://blog.csdn.net/sdnulixianrui/article/details/78652533
+// 构建堆,greater 小的优先级高
+// pop是pop堆顶的元素
+// 参考：第二周 第6课 实战
+
+
+
+// 思路2+时空复杂度：
+// 桶排序
+// 
+// 时间O(N)
+// 空间O(N)
+// 题解：
+// class Solution {
+// public:
+//     vector<int> topKFrequent(vector<int>& nums, int k) {
+//         unordered_map<int, int> count;
+//         int max_freq = 1;
+//         for (const int num : nums) {
+//             max_freq = max(max_freq, ++count[num]);
+//         }
+        
+//         unordered_map<int, vector<int>> buckets;
+//         for (const auto& kv : count) {
+//             buckets[kv.second].push_back(kv.first);
+//         }
+//         vector<int> ans;
+//         for (int i = max_freq; i >=1; --i) {
+//             auto it = buckets.find(i);
+//             if (it == buckets.end()) continue;
+//             ans.insert(ans.end(), it->second.begin(), it->second.end());
+//             if (ans.size() == k) return ans;
+//         }
+//         return ans;
+//     }
+// };
+// 参考：huahua
+// https://www.youtube.com/watch?v=lm6pBga98-w
+```
+
+
+
+
+
+ 
