@@ -1,0 +1,59 @@
+```
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+        unordered_map<int, int> indies;
+        for (int i = 0; i < nums.size(); i++) {
+            indies[nums[i]] = i;
+        }
+
+        for (int i = 0; i < nums.size(); i++) {
+            int two = target - nums[i];
+            if(indies.count(two) && indies[two] != i) {
+                return {i, indies[two]};
+            }
+        }
+        return {};
+    }
+};
+
+// 思路1+时间复杂度：
+// 暴力方法：for(int i = 0; i <nums.size();i++ ){for(int j = i+1; j< nums.size(); j++)}{...}
+// 时间复杂度O(n^2)
+// 参考：https://www.youtube.com/watch?v=tNtk_rwbaIk
+// 题解：
+// vector<int> twoSum(vector<int>& nums, int target) {
+//         for (int i = 0; i < nums.size(); i++) {
+//             for (int j = i + 1; j <nums.size(); j++) {
+//                 int sum  = nums[i] + nums[j];
+//                 if (sum == target) {
+//                     return {i, j};
+//                 } 
+//             }
+//         }
+//         return {};
+//     }
+
+// 思路2+时间复杂度:
+// 使用unordered_map进行for循环存进去，它的键为数组的值，它的值为数组的位置
+// 然后目标减去数组的值，看结果是否在map中能够找到，能够找到就返回，因为一个元素不能用2次，所以结果的位置必须不和刚才那个数组的位置相同。
+// 时间复杂度：O(n)
+// 参考：https://www.youtube.com/watch?v=tNtk_rwbaIk
+// 题解:
+
+// vector<int> twoSum(vector<int>& nums, int target) {
+//         unordered_map<int, int> indies;
+//         for (int i = 0; i < nums.size(); i++){
+//             indies[nums[i]] = i;
+//         }
+
+//         for(int i = 0; i < nums.size(); i++){
+//             int left = target - nums[i];
+//             if(indies.count(left) && indies[left] != i){
+//                 return {i, indies[left]};
+//             }
+//         }
+//         return {};
+//     }
+```

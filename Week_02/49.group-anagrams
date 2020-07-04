@@ -1,0 +1,62 @@
+```
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<string, vector<string>> mp;
+        for (auto& s: strs) {
+            string t = s;
+            sort(t.begin(), t.end());
+            mp[t].push_back(s);
+        }
+        vector<vector<string>> res;
+        for (auto& p : mp) {
+            res.push_back(p.second);
+        }
+        return res;
+    }
+};
+
+// 思路1+时空复杂度：
+// 题解：map，用排序后的作为键
+// 时间复杂：O(NK) N是字符串的数目，KlogK是每个字符串的最大长度
+// 62%
+// 参考：
+// class Solution {
+// public:
+//     vector<vector<string>> groupAnagrams(vector<string>& strs) {
+//         unordered_map<string, vector<string>> mp;
+//         for (auto s: strs) {
+//             string t = s;
+//             sort(t.begin(), t.end());
+//             mp[t].push_back(s);
+//         }
+//         vector<vector<string>> res;
+//         for (auto p : mp) {
+//             res.push_back(p.second);
+//         }
+//         return res;
+//     }
+// };
+
+
+// 思路2+时空复杂度：
+// auto& 避免拷贝，缓解一些东西
+// 题解：
+// 参考：
+// class Solution {
+// public:
+//     vector<vector<string>> groupAnagrams(vector<string>& strs) {
+//         unordered_map<string, vector<string>> mp;
+//         for (auto& s: strs) {
+//             string t = s;
+//             sort(t.begin(), t.end());
+//             mp[t].push_back(s);
+//         }
+//         vector<vector<string>> res;
+//         for (auto& p : mp) {
+//             res.push_back(p.second);
+//         }
+//         return res;
+//     }
+// };
+```

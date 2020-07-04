@@ -1,0 +1,92 @@
+94、144、590、589、429迭代递归都是一个模板
+```
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        int white = 0, gray = 1;
+        stack<pair<int, TreeNode*>> s;
+        s.push(make_pair(white, root));
+        
+        vector<int> ans;
+        while (!s.empty()) {
+            int color = s.top().first;
+            TreeNode* t = s.top().second;
+            s.pop();
+            
+            if (t == NULL) continue;
+            if (color == white) {
+                s.push(make_pair(white, t->right));
+                s.push(make_pair(gray, t));
+                s.push(make_pair(white, t->left));
+            } else {
+                ans.push_back(t->val);
+            }
+        }
+        return ans;
+    }
+};
+
+
+// 思路1+时空复杂度：
+// 迭代
+// 时间复杂度O(n)
+// 题解：
+// class Solution {
+// public:
+//     vector<int> inorderTraversal(TreeNode* root) {
+//         vector<int> ans;
+//         inorderTraversal(root, ans);
+//         return ans;
+//     }
+// private:
+//     void inorderTraversal(TreeNode* root, vector<int>& ans) {
+//         if (root == NULL) return;
+//         inorderTraversal(root->left, ans);
+//         ans.push_back(root->val);
+//         inorderTraversal(root->right, ans);
+//     }
+// };
+// 参考：
+
+
+// 思路2+时空复杂度：
+// 使用栈模拟递归
+// 新节点为白色，已访问的为灰色
+// 如果遇到节点为白色，将其标记为灰色，同时将其右子节点、自身、左子节点入栈
+// 如果遇到节点为灰色，将其节点的值输出
+// 题解：
+// class Solution {
+// public:
+//     vector<int> inorderTraversal(TreeNode* root) {
+//         int white = 0, gray = 1;
+//         stack<pair<int, TreeNode*>> s;
+//         vector<int> ans;
+//         s.push(make_pair(white, root));
+//         while (!s.empty()) {
+//             int color = s.top().first;
+//             TreeNode* t = s.top().second;
+//             s.pop();
+//             if (t == NULL) continue;
+//             if (color == white) {
+//                 s.push(make_pair(white, t->right));
+//                 s.push(make_pair(gray, t));
+//                 s.push(make_pair(white, t->left));
+//             } else {
+//                 ans.push_back(t->val);
+//             }
+//         }
+//         return ans;
+//     }
+// };
+// 参考：
+// https://leetcode-cn.com/problems/binary-tree-inorder-traversal/solution/yan-se-biao-ji-fa-yi-chong-tong-yong-qie-jian-ming/
+```

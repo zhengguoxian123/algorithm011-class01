@@ -1,0 +1,88 @@
+```
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        int white = 0, gray = 1;
+        stack<pair<int, TreeNode*>> s;
+        s.push(make_pair(white, root));
+        
+        while (!s.empty()) {
+            int color = s.top().first;
+            TreeNode* t = s.top().second;
+            s.pop();
+            
+            if (t == NULL) continue;
+            if (color == white) { 
+                s.push(make_pair(white, t->right));
+                s.push(make_pair(white, t->left));
+                s.push(make_pair(gray, t));
+            } else {
+                ans.push_back(t->val);
+            }
+        }
+        return ans;
+    }
+
+};
+
+// 思路1+时空复杂度：
+// 递归
+// 时间复杂度O(n)
+// 题解：
+// class Solution {
+// public:
+//     vector<int> preorderTraversal(TreeNode* root) {
+//         vector<int> ans;
+//         preorderTraversal(root, ans);
+//         return ans;
+//     }
+// private:
+//     void preorderTraversal(TreeNode* root, vector<int>& ans) {
+//         if (root == NULL) return;
+//         ans.push_back(root->val);
+//         preorderTraversal(root->left, ans);
+//         preorderTraversal(root->right, ans);
+//     }
+// };
+// 参考：
+
+// 思路2+时空复杂度：
+// 题解：
+// class Solution {
+// public:
+//     vector<int> preorderTraversal(TreeNode* root) {
+//         vector<int> ans;
+//         int white = 0, gray = 1;
+//         stack<pair<int, TreeNode*>> s;
+//         s.push(make_pair(white, root));
+        
+//         while (!s.empty()) {
+//             int color = s.top().first;
+//             TreeNode* t = s.top().second;
+//             s.pop();
+            
+//             if (t == NULL) continue;
+//             if (color == white) { 
+//                 s.push(make_pair(white, t->right));
+//                 s.push(make_pair(white, t->left));
+//                 s.push(make_pair(gray, t));
+//             } else {
+//                 ans.push_back(t->val);
+//             }
+//         }
+//         return ans;
+//     }
+
+// };
+// 参考：94题
+```
