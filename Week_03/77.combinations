@@ -1,0 +1,365 @@
+```
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        if (!digits.size()) return {};
+        vector<vector<char>> d(10);
+        d[0] = {};
+        d[1] = {};
+        d[2] = {'a', 'b', 'c'};
+        d[3] = {'d', 'e', 'f'};
+        d[4] = {'g', 'h', 'i'};
+        d[5] = {'j', 'k', 'l'};
+        d[6] = {'m', 'n', 'o'};
+        d[7] = {'p', 'q', 'r', 's'};		
+        d[8] = {'t', 'u', 'v'};
+        d[9] = {'w', 'x', 'y', 'z'};
+        string cur;
+        helper(digits, d, 0, cur);
+        return ans;
+    }
+private: 
+	vector<string> ans;
+    void helper(const string& digits, const vector<vector<char>>& d, int l, string& cur) {
+        //terminate
+        if (l >= digits.size()) {
+            ans.push_back(cur);
+            return;
+        }
+        // process
+        // drill down 
+        // reverse status
+        for (char c : d[digits[l]- '0']) {
+            cur.push_back(c);
+            helper(digits, d, l + 1, cur);
+            cur.pop_back();
+        }
+    }
+};
+
+
+// 括号生成怎么弄呢？
+// 思路+ 时空复杂度：
+// l是第l个，表示第l层
+// digits[l]是其中一个数字
+// d[digits[l] - '0'] 可得得到这个数字对应多个字符,每一层来一个for循环
+
+// terminate
+// 如果当前长度满足要求，那就把他push到答案里面去
+// process
+// drill down
+// reverse status
+// 对于这个数组的每一个字符
+// 1)push到当前中
+// 2)下探到下一层
+// 2)pop当前的
+
+// 时间O(4^N)，为什么，2个字符的话，3X3= 9，3的话，3X3X3 = 27,所以是指数级的
+// 空间O(4^N)，为什么，存储这么多结果，所以也是指数级的
+// 题解：
+// https://zxi.mytechroad.com/blog/leetcode-problem-categories/
+// class Solution {
+// public:
+//     vector<string> letterCombinations(string digits) {
+//         if (digits.empty()) return {};
+//         vector<vector<char>> d(10);
+//         d[0] = {};
+//         d[1] = {};
+//         d[2] = {'a', 'b', 'c'};
+//         d[3] = {'d', 'e', 'f'};
+//         d[4] = {'g', 'h', 'i'};
+//         d[5] = {'j', 'k', 'l'};
+//         d[6] = {'m', 'n', 'o'};
+//         d[7] = {'p', 'q', 'r', 's'};
+//         d[8] = {'t', 'u', 'v'};
+//         d[9] = {'w', 'x', 'y', 'z'};
+
+//         string cur;
+//         dfs(digits, d, 0, cur);
+//         return ans;
+//     }
+// private:
+
+//     void dfs(const string& digits, const vector<vector<char>>& d,  int l, string& cur) {
+//         // terminate
+//         if (l == digits.size()) {
+//             ans.push_back(cur);
+//             return;
+//         }
+//         // processs
+//         // drill down
+//         // reverse status
+//         for (const char c : d[digits[l] - '0']) {
+//             cur.push_back(c);
+//             dfs(digits, d, l + 1, cur);
+//             cur.pop_back();
+//         }
+
+//     }
+//     vector<string> ans;
+// };
+
+
+// 思路2：
+// 时间复杂度：还是指数级
+// 空间复杂度:指数级
+// class Solution {
+// public:
+//     vector<string> letterCombinations(string digits) {
+//         if (digits.empty()) return {};
+//         vector<vector<char>> d(10);
+//         d[0] = {};
+//         d[1] = {};
+//         d[2] = {'a', 'b', 'c'};
+//         d[3] = {'d', 'e', 'f'};
+//         d[4] = {'g', 'h', 'i'};
+//         d[5] = {'j', 'k', 'l'};
+//         d[6] = {'m', 'n', 'o'};
+//         d[7] = {'p', 'q', 'r', 's'};
+//         d[8] = {'t', 'u', 'v'};
+//         d[9] = {'w', 'x', 'y', 'z'};
+//         vector<string> ans = {""};
+//         for (char digit: digits) {
+//             vector<string> tmp;
+//             for (const string& s: ans) 
+//                 for (char c: d[digit - '0'])
+//                     tmp.push_back(s + c);
+//             ans.swap(tmp);  
+//         }
+//         return ans;
+//     }
+// };
+
+```
+#####77
+```
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+	vector<int> cur;
+	helper(n, k, cur, 0);
+	return ans;
+}
+private:
+    vector<vector<int>> ans;
+    void helper(const int& n, const int& k, vector<int>& cur, int s) {
+        // terminate
+        if (cur.size() == k) {
+            ans.push_back(cur);
+            return;
+        }
+        // process
+        // drill down
+        // reverse status
+        for (int i = s; i < n; ++i) {
+            cur.push_back(i + 1);
+            helper(n, k, cur, i + 1);
+            cur.pop_back();
+        }
+}
+
+
+// 如果当前满足要求，就把他push到答案中
+// 对于从s到n-1的每一个数,为什么不是从0开始呢，因为前面的东西不能继续用了
+// 比如
+// (1,2) (1,3) (1,4)
+// (2,3) (2,4)
+// (3,4)
+// 1)把它+1push到当前中，
+// 2)+1下探到下一层
+// 3)恢复本层状态，把当前最后的那个pop出来
+
+};
+
+
+
+// 思路1+时空复杂度：
+// 
+// 如果当前的数量满足k个数,就把他放到答案里面去，返回
+// 对于s到n-1的每一个数
+// 1)把它+1push到cur中，
+// 2)然后+1下探到下一层
+// 3)恢复当前层状态，把cur的最后一个pop出来
+
+// 时间O(k*C^k_N)C^k_N是组合数量，k是长度
+// 空间O(C^k_N)
+
+// 题解：
+// 参考：
+//https://zxi.mytechroad.com/blog/searching/leetcode-77-combinations/
+// class Solution {
+// public:
+//     vector<vector<int>> combine(int n, int k) {
+//         vector<vector<int>> ans;
+//         vector<int> cur;
+//         function<void(int)> dfs = [&](int s) {
+//             // terminate
+//             if (cur.size() == k) {
+//                 ans.push_back(cur);
+//                 return;
+//             }
+//             // process
+//             // drill down
+//             // reverse state
+//             for (int i = s; i < n; ++i) {
+//                 cur.push_back(i + 1);
+//                 dfs(i + 1);
+//                 cur.pop_back();
+//             }
+//         };
+//         dfs(0);
+//         return ans;
+//     }
+// };
+```
+#####39
+```
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> cur;
+        sort(candidates.begin(), candidates.end());
+        helper(candidates, target, 0, cur);   
+        return ans;
+    }
+private:
+    vector<vector<int>> ans;
+
+    void helper(const vector<int>& candidates, int target, int s, vector<int>& cur) {
+        // terminate
+        if (target == 0) {
+            ans.push_back(cur);
+            return;
+        }
+        // process
+        // drill down
+        // reverse status
+        for (int i = s; i< candidates.size(); ++i) {
+            if (candidates[i] > target) break;
+            cur.push_back(candidates[i]);
+            helper(candidates, target - candidates[i], i, cur);
+            cur.pop_back();
+        }
+    }
+};
+
+// 思路：
+// 1)candidate 2,3, 6,7  target 7
+// 2 2 3
+// 3 2 2 (不能用之前的,不然会重复)
+// 2)为什么要sort
+// 如果有的数比target还大的话，那么就break.之前的东西就没了
+// 时间和空间复杂度：
+// My understanding that time complexity is O(N^target) where N is a length of candidates array.
+// And space complexity is O(target).
+```
+#####40
+```
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<int> cur;
+        used = vector<int>(candidates.size(), 0);
+        helper(candidates, target, 0, cur);
+        return ans;
+    }
+
+private:
+    vector<vector<int>> ans;
+    vector<int> used;
+    void helper(vector<int>& candidates, int target, int s, vector<int>& cur) {
+        if (target == 0) {
+            ans.push_back(cur);
+            return;
+        }
+        for (int i = s; i < candidates.size(); ++i) {
+            if (candidates[i] > target) break;
+            if (i > s && candidates[i] == candidates[i - 1]) continue;
+            // if (used[i]) continue;
+            cur.push_back(candidates[i]);
+            // used[i] = 1;
+            helper(candidates, target - candidates[i], i + 1,cur);
+            cur.pop_back();
+            // used[i] = 0;
+        }
+    }
+};
+
+// 如何保证只能用一次呢,i + 1为什么就不能保证呢
+// [10,1,2,7,6,1,5]
+// 1,1,2,5,6,7,10
+// 不能保证，1,2,5, 1,2,5,2,5会被使用多次。
+// 1)用set去重
+// 2)为什么used[i]无效呢，只能起到这个答案中不重复使用之前使用过的,那我本来就不会使用已经使用的(i +1 决定的)，所以无效
+// 3)为什么// if (i > 0 && candidates[i] == candidates[i - 1]) continue;无效呢
+//   那会用到前面的东西
+//   if (i > s && candidates[i] == candidates[i - 1]) continue;
+// 
+
+// set
+// 优化1：
+// class Solution {
+// public:
+//     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+//         sort(candidates.begin(), candidates.end());
+//         vector<int> cur;
+//         // used = vector<int>(candidates.size(), 0);
+//         helper(candidates, target, 0, cur);
+//         return vector<vector<int>>(ans.begin(), ans.end());
+//     }
+
+// private:
+//     set<vector<int>> ans;
+//     // vector<int> used;
+//     void helper(vector<int>& candidates, int target, int s, vector<int>& cur) {
+//         if (target == 0) {
+//             ans.insert(cur);
+//             return;
+//         }
+//         for (int i = s; i < candidates.size(); ++i) {
+//             if (candidates[i] > target) break;
+//             // if (i > 0 && candidates[i] == candidates[i - 1]) continue;
+//             // if (used[i]) continue;
+//             cur.push_back(candidates[i]);
+//             // used[i] = 1;
+//             helper(candidates, target - candidates[i], i + 1,cur);
+//             cur.pop_back();
+//             // used[i] = 0;
+//         }
+//     }
+// };
+
+// if (i > s && candidates[i] == candidates[i - 1]) continue;
+// 优化2：
+// class Solution {
+// public:
+//     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+//         sort(candidates.begin(), candidates.end());
+//         vector<int> cur;
+//         used = vector<int>(candidates.size(), 0);
+//         helper(candidates, target, 0, cur);
+//         return ans;
+//     }
+
+// private:
+//     vector<vector<int>> ans;
+//     vector<int> used;
+//     void helper(vector<int>& candidates, int target, int s, vector<int>& cur) {
+//         if (target == 0) {
+//             ans.push_back(cur);
+//             return;
+//         }
+//         for (int i = s; i < candidates.size(); ++i) {
+//             if (candidates[i] > target) break;
+//             if (i > s && candidates[i] == candidates[i - 1]) continue;
+//             // if (used[i]) continue;
+//             cur.push_back(candidates[i]);
+//             // used[i] = 1;
+//             helper(candidates, target - candidates[i], i + 1,cur);
+//             cur.pop_back();
+//             // used[i] = 0;
+//         }
+//     }
+// };
+

@@ -1,0 +1,177 @@
+异曲同工，使用set进行去重，但是不好，还有更好的剪枝方法。
+时间空间复杂度比较微妙。
+```
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        used = vector<int>(nums.size(), 0);
+        vector<int> cur;
+        helper(nums,cur);
+        return ans;
+    }
+private:
+    vector<vector<int>> ans;
+    vector<int> used;
+    void helper(const vector<int>& nums,vector<int>& cur) {
+        // terminate
+        if (cur.size() == nums.size()) {
+            ans.push_back(cur);
+            return;
+        }
+        // process
+        // drill down
+        // reverse status
+        for (int i = 0; i < nums.size(); ++i) {
+            if (used[i]) continue;
+            cur.push_back(nums[i]);
+            used[i] = 1;
+            helper(nums, cur);
+            cur.pop_back();
+            used[i] = 0;
+        }
+    }    
+};
+// 我可用之前的,但是我不能用之前用过的
+// 
+
+
+// 如果当前数量等于个数的话，就把答案放进去
+// 对于每一个数
+// 1)如果已经使用了，就跳过
+// 2)标记当前已经使用了
+// 3)把当前数加到vec中
+// 4)下探到下一层
+// 5)把当前数从vec中pop出来
+// 6)标记恢复为未使用
+
+
+// 思路1+时空复杂度:
+// 如果当前数量等于个数的话，就把答案放进去
+// 对于每一个数
+// 1)如果已经使用了，就跳过
+// 2)标记当前已经使用了
+// 3)把当前数加到vec中
+// 4)下探到下一层
+// 5)把当前数从vec中pop出来
+// 6)标记恢复为未使用
+// 时间O(N！)
+// 空间O(N)
+// 题解:
+// 参考:
+//https://zxi.mytechroad.com/blog/searching/leetcode-46-permutations/
+// class Solution {
+// public:
+//     vector<vector<int>> permute(vector<int>& nums) {
+//         const int n = nums.size();
+
+//         vector<vector<int>> ans;
+//         vector<int> path;
+//         vector<int> used(n);
+//         function<void(int)> dfs = [&](int d) {
+//             // terminate
+//             if (d == n) {
+//                 ans.push_back(path);
+//                 return;
+//             }
+//             // process
+//             // drill down
+//             // reverse states
+//             for (int i = 0; i < n; ++i) {
+//                 if (used[i]) continue;
+//                 used[i] = 1;
+//                 path.push_back(nums[i]);
+//                 dfs(d + 1);
+//                 path.pop_back();
+//                 used[i]= 0;
+//             }
+//         };
+//         dfs(0);
+//         return ans;
+//     }
+// }
+```
+####47
+```
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+        used = vector<int>(nums.size(), 0);
+        vector<int> cur;
+        helper(nums, cur);
+        return ans;
+    }
+private:
+    vector<vector<int>> ans;
+    vector<int> used;
+    void helper(const vector<int>& nums, vector<int>& cur) {
+        // terminate
+        if (cur.size() == nums.size()) {
+            ans.push_back(cur);
+            return;        
+        }
+        // process
+        // drill down 
+        // reverse status
+        for (int i = 0; i < nums.size(); ++i) {
+            if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+            if (used[i]) continue;
+            cur.push_back(nums[i]);
+            used[i] = 1;
+            helper(nums, cur);
+            cur.pop_back();
+            used[i] = 0;
+        }
+    }
+};
+
+// 思路1：
+// if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) continue;
+// 1 1 2
+// 你使用第二个1时，第一个1是used[i] = 0,所以跳过去
+// 思路2：
+// set去重
+
+
+// 思路1+时空复杂度：
+// 思路：类比全排列46,用set把重复的去掉,这就是锻炼举一反三的能力
+// 把其他理解好了，对新的更容易理解和变通，五毒神掌的好处是真好，我做的压根就达不到这种效果
+// 时间O(N!)
+// 空间O(N) 
+// class Solution {
+// public:
+//     vector<vector<int>> permuteUnique(vector<int>& nums) {
+//         const int n = nums.size();
+//         set<vector<int>> res;
+//         vector<int> cur;
+//         vector<int> used(nums.size(), 0);
+
+//         function<void(int)> dfs = [&](int d) {
+//             // terminate
+//             if (d == n) {
+//                 res.insert(cur);
+//                 return;
+//             }
+//             // process
+//             // drill down
+//             // reverse states
+//             for (int i = 0; i < n; ++i) {
+//                 if (used[i]) continue;
+//                 used[i] = 1;
+//                 cur.push_back(nums[i]);
+//                 dfs(d + 1);
+//                 cur.pop_back();
+//                 used[i] = 0;
+//             }
+//         };
+
+//         dfs(0);
+//         vector<vector<int>> ans;
+//         std::copy(res.begin(), res.end(), std::back_inserter(ans));
+//         return ans;
+//     }
+// };
+```
+
+
+

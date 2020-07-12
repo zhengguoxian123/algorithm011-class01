@@ -1,0 +1,86 @@
+```
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+	    return helper(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+}
+private:
+    TreeNode* helper(vector<int>& preorder,int i, int j, vector<int>& inorder, int ii, int jj)   {
+        // terminate
+        if (i >= j || ii >= jj) return NULL;
+        // process
+        int mid = preorder[i];
+        auto f = find(inorder.begin(), inorder.end(), mid);
+        int dis = f - inorder.begin() - ii;
+        TreeNode* root = new TreeNode(mid);
+        // drill down
+        root->left = helper(preorder, i + 1, i + 1 + dis, inorder, ii, ii + dis);
+        root->right = helper(preorder, i + 1 + dis, j, inorder, ii+ dis + 1, jj);
+        return root;
+        // reverse status
+    }
+// 在前序vec中找到根节点
+// 在中序vec中找到根节点位姿
+// 在中序中算一下距离
+// 然后下探下一层
+// tree   1
+//      2  3
+//    4   5
+// preorder：1 2 4 3 5
+// inorder:  4 2 1 5 3
+
+};
+
+
+
+// 思路+时空复杂度：
+// 1)通过先序找到根节点
+// 2)在中序vector中找到根节点所在的位置
+// 3)算一下距离
+// 4)以根节点建立TreeNode
+// 5)下探到下一层
+// 对左子树进行重建，对右子树进行重建
+// 时间O(N)
+// 空间O(N)
+// 题解+参考：
+// https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/discuss/34557/My-neat-C%2B%2B-solution
+// class Solution {
+// public:
+//     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+//         return helper(preorder, 0, preorder.size(), inorder, 0, inorder.size());
+//     }
+// private:
+//     TreeNode* helper(vector<int>& preorder, int i, int j, vector<int>& inorder, int ii, int jj) {
+//         // tree :     1 
+//         //          2   3
+//         //         4   5  
+//         // inorder:   4 2 1 5 3
+//         // preorder : 1 2 4 3 5
+//         // 每次从preorder头部取一个值mid,作为树的根节点
+//         // 检查mid在inorder中的位置，则将mid前面的部分作为树的左子树，右部分作为树的右子树
+
+//         //terminate
+//         if (i >= j || ii >= j ) return NULL;
+//         // process
+//         int mid = preorder[i];
+//         auto f = find(inorder.begin() + ii, inorder.begin() + jj, mid);
+//         int dis = f - inorder.begin() - ii;
+//         TreeNode* root = new TreeNode(mid);
+
+//         // drill down
+//         root->left = helper(preorder, i + 1, i + 1 + dis, inorder, ii, ii + dis);
+//         root->right = helper(preorder, i + 1 + dis, j, inorder, ii + dis + 1, jj);
+//         return root;
+//         // reverse states
+//     }
+// };
+```

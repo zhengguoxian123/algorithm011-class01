@@ -1,0 +1,89 @@
+```
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // terminate
+        if (!root) return root;
+        // process
+        if (root == p || root == q) return root;
+        // drill down
+        TreeNode* l = lowestCommonAncestor(root->left, p, q);
+        TreeNode* r = lowestCommonAncestor(root->right, p, q);
+        if (l && r) return root;
+        return l? l: r;
+}
+
+// 思路：
+// terminate
+// 如果为空，返回NULL
+// process
+// 如果其中一个等于root,那么就返回root
+// drill down
+// 左子树的公共祖先
+// 右子树的公共祖先
+// 如果都不为空，那么就返回root
+// 如果一个树为空，就返回另一个树的根
+// reverse status
+};
+
+
+// 思路1+时空复杂度：
+// 思路：
+// terminate
+// 如果为空，返回NULL
+// process
+// 如果其中一个等于root,那么就返回root
+// drill down
+// 左子树的公共祖先
+// 右子树的公共祖先
+// 如果都不为空，那么就返回root
+// 如果一个树为空，就返回另一个树的根
+// reverse status
+// 题解：时间O(N)
+// 参考：
+// https://zxi.mytechroad.com/blog/tree/leetcode-236-lowest-common-ancestor-of-a-binary-tree/
+// class Solution {
+// public:
+//     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+//         // terminate
+//         if (!root) return root;
+//         // process
+//         if (root == p || root == q) return root;
+//         // drill down
+//         TreeNode* l = lowestCommonAncestor(root->left, p, q);
+//         TreeNode* r = lowestCommonAncestor(root->right, p, q);
+//         if (l && r) return root;
+//         return l ? l: r;
+//         // reverse states   
+//     }
+// };
+```
+```
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        // terminate
+        if (!root) return root;
+        // process
+        if (root == p || root == q) return root;
+        // drill down
+        if (p->val < root->val && q->val < root->val)
+            return lowestCommonAncestor(root->left, p, q);
+        if (p->val > root->val && q->val > root->val)
+            return lowestCommonAncestor(root->right, p, q); 
+        return root;
+        // reverse states
+        
+    }
+};
+```
