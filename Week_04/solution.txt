@@ -1,0 +1,289 @@
+
+//860.lemonade-change
+// class Solution {
+// public:
+//     bool lemonadeChange(vector<int>& bills) {
+//         int fives = 0;
+//         int tens = 0;
+//         for (const int bill : bills) {
+//             if (bill == 5) {
+//                 ++fives;
+//             } else if (bill == 10) {
+//                 if (!fives) return false;
+//                 ++tens;
+//                 --fives;
+//             } else if (bill == 20) {
+//                 if (tens && fives) {
+//                     --tens;
+//                     --fives;
+//                 } else if (fives >= 3) {
+//                     fives -= 3;
+//                 } else {
+//                     return false;
+//                 }
+//             }
+//         }
+//         return true;
+//     }
+// };
+
+// 122best-time-to-buy-and-sell-stock-ii
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int ret = 0;
+        for (int i = 1; i < prices.size(); i++) {
+            ret += max(prices[i] - prices[i - 1], 0);
+        }
+        return ret; 
+    }
+};
+
+// 
+
+//455.assign-cookies
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(begin(g), end(g));
+        sort(begin(s), end(s));
+
+        int ans = 0;
+
+        int j = 0;
+        for (int i = 0; i < g.size(); i++) {
+            while (j < s.size() && s[j] < g[i]) {
+                ++j;
+            }
+            if ( j < s.size()) {
+                ++ans;
+                ++j;
+                continue;
+            }
+        }
+        return ans;    
+    }
+};
+
+
+// 874.walking-robot-simulation
+class Solution {
+public:
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        unordered_set<string> obs;
+        for (int i = 0; i < obstacles.size();i++) {
+            obs.insert(to_string(obstacles[i][0])+ "#" + to_string(obstacles[i][1]));
+        }
+        int res = 0, x = 0, y = 0, dir = 0;
+        vector<vector<int>> dirs{{0, 1}, {1,0}, {0,-1}, {-1, 0}};
+        for (int i = 0; i < commands.size(); i++) {
+            if (commands[i] == -2) dir--;
+            else if (commands[i] == -1) dir++;
+            else {
+                for (int j = 0; j < commands[i]; j++) {
+                   
+                    string coor = to_string(x + dirs[dir][0]) + "#" + to_string(y + dirs[dir][1]);
+                    if (obs.count(coor)) break;
+                    x += dirs[dir][0], y+= dirs[dir][1];
+                }
+                res = max(res, x * x + y * y);
+            }
+            
+            if (dir == -1) dir = 3;
+            if (dir == 4) dir = 0;
+        }
+        return res;
+
+    }
+};
+
+// 529.minesweeper
+// BFS耗时比DFS少了1半时间
+// BFS:
+// class Solution {
+// public:
+//     vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+//         int m = board.size(), n = board[0].size();
+//         queue<vector<int>> q;
+//         q.push(click);
+//         while (!q.empty()) {
+//             vector<int> cell = q.front(); q.pop();
+//             int row = cell[0], col = cell[1];
+//             if (board[row][col] == 'M') {
+//                 board[row][col] = 'X';
+//             } else {
+//                 int count = 0;
+//                 for (int i = -1; i < 2; ++i) {
+//                     for (int j = -1; j < 2; ++j) {
+//                         if (i == 0 && j == 0) continue;
+//                         int r = row + i, c = col + j;
+//                         if (r < 0 || r >= m || c < 0 || c >= n) continue;
+//                         if (board[r][c] == 'M'|| board[r][c] == 'X') count++;
+//                     }
+//                 }
+//                 if (count > 0) {
+//                     board[row][col]  = (char)(count + '0');
+//                 } else {
+//                     board[row][col] = 'B';
+//                     for (int i = -1; i < 2; i++) {
+//                         for (int j = -1; j < 2; j++) {
+//                             if (i == 0 && j == 0) continue;
+//                             int r = row + i, c = col + j;
+//                             if (r < 0 || r >= m || c < 0 || c >= n) continue;
+//                             if (board[r][c] == 'E') {
+//                                  board[r][c] = 'B';
+//                                 q.push(vector<int>{r, c});
+//                             }
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//         return board;
+           
+//     }
+// };
+
+// DFS:
+// class Solution {
+// public:
+//     vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+//         int m = board.size(), n = board[0].size();
+//         int row = click[0], col = click[1];
+        
+//         if (board[row][col] == 'M') {
+//             board[row][col] = 'X';
+//         } else {
+//             int count = 0;
+//              for (int i = -1; i < 2; ++i) {
+//                  for (int j = -1; j < 2; ++j) {
+//                      if (i == 0 && j == 0) continue;
+//                      int r = row + i, c = col + j;
+//                      if (r < 0 || r >= m || c < 0 || c >=n) continue;
+//                      if (board[r][c]== 'M' || board[r][c] == 'X') count++;
+//                  }
+//              }
+//              if (count > 0) {
+//                  board[row][col] = (char)(count + '0');
+//              } else {
+//                  board[row][col] = 'B';
+//                  for (int i = -1 ; i < 2; ++i) {
+//                      for (int j = -1; j < 2; ++j) {
+//                          if (i == 0 && j == 0) continue;
+//                          int r = row + i, c = col + j;
+//                          if (r < 0 || r >= m || c < 0 || c >= n) continue;
+//                          vector<int> next_click{r, c};
+//                          if (board[r][c] == 'E') updateBoard(board, next_click);
+//                      }
+//                  }
+//              }
+//         }
+//         return board;   
+//     }
+// };
+
+// 55.jump-game
+// class Solution {
+// public:
+//     bool canJump(vector<int>& nums) {
+//         const int n = nums.size();
+//         int far =  nums[0];
+//         for (int i = 0; i < n; i++) {
+//             if (i > far) break;
+//             far = max(far, i + nums[i]);
+//         }
+//         return far >= n - 1;
+//     }
+// };
+
+// 45.jump II
+
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int far = 0;
+        int near = 0;
+        int steps =0;
+        for (int i = 0; i < nums.size(); i++) {
+            if (i > near) {
+                ++steps;
+                near = far;
+            }
+            far = max(far, nums[i] + i);
+        }
+        return steps;
+    }
+};
+
+// 33.search-in-rotated-sorted-array
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n = nums.size();
+        int left = 0;
+        int right = n - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > nums[n -1]) left = mid + 1;
+            else {
+                right = mid;
+            } 
+        }
+
+        int rot = left;
+        left = 0, right = n -1;
+        while (left <= right) {
+            int mid = (left + right) /2;
+            int realmid = (mid + rot) % n;
+            if (nums[realmid] == target) return realmid;
+            if (nums[realmid] < target) left = mid + 1;
+            else {
+                right = mid - 1;
+            }
+        }
+        return -1;
+
+
+    }
+};
+
+
+// 74.search-a-2d-matrix
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if (matrix.empty()) return false;
+        int l = 0; 
+        int r = matrix.size() * matrix[0].size();
+        int cols = matrix[0].size();
+        while (l < r) {
+            const int m = l + (r - l)/2;
+            if (matrix[m / cols][m % cols] == target) {
+                return true;
+            } else if (matrix[m / cols][m % cols] > target) {
+                r = m;
+            } else {
+                l = m + 1;
+            }
+        }
+        return false;
+    }
+};
+
+// 153.find-minimum-in-rotated-sorted-array/
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        int left = 0;
+        int right = n - 1;
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (nums[mid] > nums[n -1]) left = mid + 1;
+            else {
+                right  = mid;
+            }
+        }
+        return nums[left];
+    }
+};
