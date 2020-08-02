@@ -1,0 +1,88 @@
+######题号：221. 最大正方形
+######参考1：http://zxi.mytechroad.com/blog/dynamic-programming/leetcode-221-maximal-square/
+######参考2：https://leetcode.com/problems/maximal-square/discuss/61803/C%2B%2B-space-optimized-DP
+
+######思路：
+// 时间O(N^3)
+// 思路1:
+// m, n是边长
+// i - 1也是边长
+// m - (i - 1) = m - i + 1
+
+// (1)首先计算从左上角到右下角, 每一块的和
+// (2) 用一个大的正方形 减去 2个长条 + 一个小的
+
+// 高级解法：
+// O(N^2)
+// https://leetcode.com/problems/maximal-square/discuss/61803/C%2B%2B-space-optimized-DP
+// DP
+// dp[i][j]状态是最大的size
+// 定义第一行和第一列,
+// dp[i][j] = matrix[i][j] - '0', 意思是说，他最多可以形成一个方形的大小为1的cell如果值是1的的
+// if (i > 0 && j > 0 )但是如果matrix[i][j] == '0'的话，没有方形能够容纳cell为0的，所以是0
+// 如果matrix[i][j] == '1'的化，那么dp[i][j] 等于左边、上边和左上的邻居。然后在加上自身。
+######时空复杂度：
+// O(N^2)
+######最优解法：
+```
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+
+        if (matrix.empty()) return 0;
+
+        int m = matrix.size();
+        int n = matrix[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        int sz = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!i || !j || matrix[i][j] == '0') {
+                    dp[i][j] = matrix[i][j] - '0';
+                } else {
+                    dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j], dp[i][j - 1])) + 1;
+                }
+                sz = max(sz, dp[i][j]);
+            }
+        }
+        return sz * sz;
+    }
+};
+```
+// 一般解法：
+```
+class Solution1 {
+public:
+    int maximalSquare(vector<vector<char>>& matrix) {
+        int m = matrix.size();
+        if (m == 0) return 0;
+        int n = matrix[0].size();
+        int ans = 0;
+        vector<vector<int>> sums(m + 1, vector<int>(n + 1, 0));
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                sums[i][j] = matrix[i - 1][j - 1] - '0'
+                           + sums[i - 1][j] 
+                           + sums[i][j - 1]
+                           - sums[i - 1][j - 1];
+            }
+        }
+
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                for (int k = min(m - i + 1, n - j + 1) ; k > 0; k--) {
+                    int sum = sums[i - 1 + k][j - 1 + k]
+                            - sums[i - 1 + k][j - 1]
+                            - sums[i - 1][j - 1 + k]
+                            + sums[i - 1][j - 1];
+                    if (sum == k * k) {
+                        ans = max (ans, sum);
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
+```
