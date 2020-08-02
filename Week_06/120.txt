@@ -1,0 +1,75 @@
+######题号：120. 三角形最小路径和
+######参考：https://zxi.mytechroad.com/blog/dynamic-programming/leetcode-120-triangle/
+######思路：
+######时空复杂度：
+时间O(N^2)
+空间O(1) 复用原来的数组
+######最优解法：
+```
+// 空间复杂度变为O(N)
+class Solution2 {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<vector<int>> f(2, vector<int>(n + 1, INT_MAX));
+
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= i; ++j) {
+                f[1][j] = triangle[i - 1][j - 1];
+                if (i == 1 && j == 1) continue;
+                if (j == 1) f[1][j] += f[0][j];
+                else if (j == i) f[1][j] += f[0][j - 1];
+                else f[1][j] += min(f[0][j], f[0][j - 1]);
+            }
+            std::swap(f[0], f[1]);
+        }
+        return *std::min_element(f[0].begin(), f[0].end());
+    }
+};
+```
+######其他：
+```
+// 空间复杂度O(N^2)
+class Solution1 {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+        vector<vector<int>> f(n + 1, vector<int>(n + 1, INT_MAX));
+
+        for (int i = 1; i <= n; ++i) {
+            for (int j = 1; j <= i; ++j) {
+                f[i][j] = triangle[i - 1][j - 1];
+                if (i == 1 && j == 1) continue;
+                if (j == 1) f[i][j] += f[i - 1][j];
+                else if (j == i) f[i][j] += f[i - 1][j - 1];
+                else f[i][j] += min(f[i - 1][j], f[i - 1][j - 1]);
+            }
+        }
+        return *std::min_element(f[n].begin(), f[n].end());
+    }
+};
+```
+
+**不推荐把输入的给改了**
+```
+class Solution {
+public:
+    int minimumTotal(vector<vector<int>>& triangle) {
+        int n = triangle.size();
+
+        auto& t = triangle;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (i == 0 && j == 0) continue;
+                if (j == 0) t[i][j] += t[i - 1][j];
+                else if (j == i) t[i][j] += t[i - 1][j - 1];
+                else t[i][j] += min(t[i - 1][j], t[i - 1][j - 1]); 
+            }
+        }
+        return *std::min_element(t[n - 1].begin(), t[n - 1].end());
+    }
+};
+
+```
+

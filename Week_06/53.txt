@@ -1,0 +1,403 @@
+######题号：53.maximum-subarray、剑指 Offer 42. 连续子数组的最大和
+######参考：
+######思路：
+// 如果前面是正数的话，我就加，否则我就不加
+
+######时空复杂度：
+// 时空复杂度：
+// 时间O(N)
+// 空间O(1)
+######最优解法：
+```
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int sum = nums[0];
+        int ans = nums[0];
+        
+        for (int i = 1; i < nums.size(); i++) {
+            sum = max(sum + nums[i], nums[i]);
+            if (sum > ans) ans = sum;	
+        }
+        return ans;
+    }
+};
+```
+
+
+######题号：152. 乘积最大子数组
+######思路：
+######参考：https://leetcode.com/problems/maximum-product-subarray/discuss/48230/Possibly-simplest-solution-with-O(n)-time-complexity
+######时空复杂度：
+######最优解法：
+```
+class Solution1 {
+public:
+    int maxProduct(vector<int>& nums) {
+        int res = nums[0];
+        int imax = res, imin = res;
+
+        for (int i = 1; i < nums.size(); i++) {
+            if (nums[i] < 0) {
+                swap(imax, imin);
+            }
+            imax = max(nums[i], imax * nums[i]);
+            imin = min(nums[i], imin * nums[i]);
+            res = max(res, imax);
+        }
+        return res;
+    }
+};
+```
+######变形题：
+```
+// 变形题：
+// 请输出这个最大子序和的子序
+// 最优解：
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int sum = nums[0];
+        int ans = nums[0];
+        int l = 0, r = 0;
+        int curL = 0;
+        for (int i = 1; i < nums.size(); i++) {
+            if (sum < 0) 
+                curL = i;
+            sum = max(sum + nums[i], nums[i]);
+            if (sum > ans) {
+                l = curL;
+                r = i;
+                ans = sum;
+            }	
+        }
+        int res = 0;
+        for (int i = l; i <= r; ++i) {
+            res += nums[i];
+        }
+        return res;
+    }
+};
+
+// 暴力循环
+// 无法确定左边界，暴力循环[FIXED]
+
+// class Solution {
+// public:
+//     int maxSubArray(vector<int>& nums) {
+//         int ans = nums[0];
+//         int l = 0;
+//         int r = 0;
+//         for (int i = 0; i < nums.size(); i++) {
+//             int sum = 0;
+//             for (int j = i; j < nums.size(); j++) {
+//                 sum += nums[j];
+//                 if (sum > ans) {
+//                     ans = sum;
+//                     l = i; r = j; 
+//                 }
+//             }
+//         }
+//         int res = 0;
+//         for (int i = l; i <= r; ++i) {
+//             res += nums[i];
+//         }
+//         return res;
+//     }
+// };
+```
+######题号：3.longest-substring-without-repeating-characters
+######思路：
+// 记住[huahua视频](https://www.youtube.com/watch?v=LupZFfCCbAU)
+// 滑动窗口
+// 1)用hash table来存储字符的最新indies
+// 2)i = max(i , idx[s[j]] + 1)
+######时空复杂度：
+// 时空复杂度：
+// O(N)
+
+######最优解法：
+```
+// 最优解法：
+// class Solution {
+// public:
+//     int lengthOfLongestSubstring(string s) {
+//         int ans = 0;
+//         int n = s.size();
+//         vector<int> idx(128, -1);
+//         for (int i = 0, j = 0; j < n; j++) {
+//             i = max(i, idx[s[j]] + 1);
+//             ans = max(ans, j - i + 1);
+//             idx[s[j]] = j;
+//         }
+//         return ans;
+//     }
+// };
+```
+######变形题：
+```// 变形题：
+// 输出子串，因为程序中左右边界有了，所以可以输出
+// 略
+
+// 次优解法：
+// 时空复杂度：
+// O(N* 128)
+// class Solution {
+// public:
+//     int lengthOfLongestSubstring(string s) {
+//         int n = s.size();
+//         int ans = 0;
+        
+//         for (int i = 0; i < n; i++) {
+//             int j = i;
+//             vector<int> seen(128, 0);
+//             while (j < n && !seen[s[j]]) {
+//                 seen[s[j++]]++;
+//             }
+//             ans = max(ans, j - i);
+//         }
+//         return ans;
+
+//     }
+// };
+
+```
+######其他：
+```
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        int ans = 0;
+        
+        for (int i = 0; i < n; i++) {
+            int j = i;
+            vector<int> seen(128, 0);
+            while (j < n && !seen[s[j]]) {
+                seen[s[j++]]++;
+            }
+            ans = max(ans, j - i);
+        }
+        return ans;
+
+    }
+};
+
+
+
+// leetcode模板
+// 最优题解：
+// 思路：
+// 记住
+// 滑动窗口
+// 1)用hash table来存储字符的最新indies
+// 2)i = max(i , idx[s[j]] + 1)
+
+// 时空复杂度：
+// O(N)
+// 最优解法：
+// class Solution {
+// public:
+//     int lengthOfLongestSubstring(string s) {
+//         int ans = 0;
+//         int n = s.size();
+//         vector<int> idx(128, -1);
+//         for (int i = 0, j = 0; j < n; j++) {
+//             i = max(i, idx[s[j]] + 1);
+//             ans = max(ans, j - i + 1);
+//             idx[s[j]] = j;
+//         }
+//         return ans;
+//     }
+// };
+
+// 变形题：
+// 输出子串，因为程序中左右边界有了，所以可以输出
+// 略
+
+// 次优解法：
+// 时空复杂度：
+// O(N* 128)
+// class Solution {
+// public:
+//     int lengthOfLongestSubstring(string s) {
+//         int n = s.size();
+//         int ans = 0;
+        
+//         for (int i = 0; i < n; i++) {
+//             int j = i;
+//             vector<int> seen(128, 0);
+//             while (j < n && !seen[s[j]]) {
+//                 seen[s[j++]]++;
+//             }
+//             ans = max(ans, j - i);
+//         }
+//         return ans;
+
+//     }
+// };
+
+
+
+
+
+
+
+
+
+// 思路1+ 时间复杂度：
+// 暴力法
+// 用一个数组或者hashmap统计被看到的次数
+//  用hashmap会超时
+// 因为输入是ACSII,所以有128可能的字符
+// O(N^2)更确切的是说O(N)*128
+// 题解：
+// class Solution {
+// public:
+//     int lengthOfLongestSubstring(string s) {
+//         const int n = s.length();
+//         int ans = 0;
+//         for (int i = 0; i < n; ++i) {
+//             vector<int> seen(128, 0);
+//             int j = i;
+//             while (j < n && !seen[s[j]])
+//                 seen[s[j++]]++;
+//             ans = max(ans, j - i);
+//         }
+//         return ans;
+//     }
+// };
+// 参考：
+// https://www.youtube.com/watch?v=LupZFfCCbAU
+
+
+// 思路2+ 时间复杂度：
+// 不懂TODO
+// O(N)
+// 题解：
+// class Solution {
+// public:
+//     int lengthOfLongestSubstring(string s) {
+//         vector<int> dict(256, -1);
+//         int maxLen = 0, start = -1;
+//         for (int i = 0; i != s.size(); i++) {
+//             if (dict[s[i]] > start) 
+//                 start = dict[s[i]];
+//             dict[s[i]] = i;
+//             maxLen = max(maxLen, i - start);
+//         }
+//         return maxLen;
+//     }
+// };
+// 参考：
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/1737/C%2B%2B-code-in-9-lines.
+```
+
+######其他：
+```
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int sum = nums[0];
+        int ans = nums[0];
+        
+        for (int i = 1; i < nums.size(); i++) {
+            sum = max(sum + nums[i], nums[i]);
+            if (sum > ans) ans = sum;	
+        }
+        return ans;
+    }
+};
+// leetcode模板
+// 最优题解：
+// 思路：
+// 如果前面是正数的话，我就加，否则我就不加
+// 时空复杂度：
+// 时间O(N)
+// 空间O(1)
+// 最优解法：
+// class Solution {
+// public:
+//     int maxSubArray(vector<int>& nums) {
+//         int sum = nums[0];
+//         int ans = nums[0];
+        
+//         for (int i = 1; i < nums.size(); i++) {
+//             sum = max(sum + nums[i], nums[i]);
+//             if (sum > ans) ans = sum;	
+//         }
+//         return ans;
+//     }
+// };
+// 变形题：
+// 请输出这个最大子序和的子序
+// 无法确定左边界，只能暴力循环吧(TODO)
+// class Solution {
+// public:
+//     int maxSubArray(vector<int>& nums) {
+//         int ans = nums[0];
+//         int l = 0;
+//         int r = 0;
+//         for (int i = 0; i < nums.size(); i++) {
+//             int sum = 0;
+//             for (int j = i; j < nums.size(); j++) {
+//                 sum += nums[j];
+//                 if (sum > ans) {
+//                     ans = sum;
+//                     l = i; r = j; 
+//                 }
+//             }
+//         }
+//         int res = 0;
+//         for (int i = l; i <= r; ++i) {
+//             res += nums[i];
+//         }
+//         return res;
+//     }
+// };
+
+
+
+
+// 思路1+时空复杂度:
+// 思路：
+// 前面那个数是正的话，我就加上，否则我就不加
+// f[i] = f[i - 1] > 0 ?nums[i] + f[i - 1] : nums[i]
+// nums:[-2, 1, -3, 4, -1, 2, 1, -5, 4]
+// f:   [-2, 1, -2, 4,  3, 5, 6,  1, 5]
+// 复杂度：
+// 时间复杂度O(n)
+// 空间O(n)
+// 题解：
+// class Solution {
+// public:
+//     int maxSubArray(vector<int>& nums) {
+//         vector<int> f(nums.size());
+//         f[0] = nums[0];
+//         for (int i = 1; i < nums.size(); i++) {
+//             f[i] = max(f[i - 1] + nums[i], nums[i]);
+//         }
+//         return *std::max_element(f.begin(), f.end());
+//     }
+// };
+
+
+// 思路2+时空复杂度:
+// 时间复杂度O(n)
+// 空间O(1)
+// 题解：
+// class Solution {
+// public:
+//     int maxSubArray(vector<int>& nums) {
+//         int ans = nums[0];
+//         int sum = nums[0];
+//         for (int i = 1; i < nums.size(); i++) {
+//             sum = max(sum + nums[i], nums[i]);
+//             if (sum > ans) ans = sum;
+//         }
+//         return ans;
+//     }
+// };
+// 参考(花花)：
+// youtube.com/watch?v=7J5rs56JBs8
+```
