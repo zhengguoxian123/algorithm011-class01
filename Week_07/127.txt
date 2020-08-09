@@ -1,0 +1,79 @@
+######题号：127. 单词接龙[常规bfs就够，暂不考虑更变态的解法]
+######思路：
+// bfs
+// 双向bfs
+// https://zxi.mytechroad.com/blog/searching/127-word-ladder/
+######时空复杂度：
+// Time Complexity: O(n*26^l) -> O(n*26^l/2), l = len(word), n=|wordList|
+// Space Complexity: O(n)
+######最优解法(单向bfs)：
+```
+class Solution1 {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        unordered_set<string> dict(wordList.begin(), wordList.end());
+
+        if (!dict.count(endWord)) return 0;
+
+        int step = 0;
+        queue<string> qu;
+        qu.push(beginWord);
+
+        int l = beginWord.size();
+
+        while (!qu.empty()) {
+            step++;
+            for (int size = qu.size(); size > 0; size--) {
+                string w = qu.front(); qu.pop();
+                for (int i = 0; i < l; i++) {
+                    char ch = w[i];
+                    for (int j = 'a'; j <= 'z'; j++) {
+                        w[i] = j;
+                        if (w == endWord) return step + 1;
+                        if (!dict.count(w)) continue;
+                        dict.erase(w);
+                        qu.push(w);
+                    }
+                    w[i] = ch;
+                }
+            }
+        }
+        return 0;
+    }
+};
+```
+######变形题(一模一样TODO返回为啥不加1,因为返回的是-1)：
+433. 最小基因变化
+```
+class Solution {
+public:
+    int minMutation(string start, string end, vector<string>& bank) {
+        unordered_set<string> dict(bank.begin(), bank.end());
+        if (!dict.count(end)) return -1;
+
+        queue<string> q;
+        q.push(start);
+        int l = start.size();
+
+        int step = 0;
+        while (!q.empty()) {
+            step++;
+            for (int size = q.size(); size > 0; size--) {
+                string w = q.front(); q.pop();
+                for (int i = 0; i < l; i++) {
+                    char ch = w[i];
+                    for (int j = 'A'; j <= 'Z'; j++) {
+                        w[i] = j;
+                        if (w == end) return step;
+                        if (!dict.count(w)) continue;
+                        dict.erase(w);
+                        q.push(w);
+                    }
+                    w[i] = ch;
+                }
+            }
+        }
+        return -1;
+    }
+};
+```

@@ -1,0 +1,46 @@
+######题号：
+######参考：https://zxi.mytechroad.com/blog/graph/leetcode-547-friend-circles/
+######思路：
+//  if (!M[i][i]) continue; 因为在dfs中会把他都置位为0的，是不是被带走了
+// M[i][j] == M[j][i]
+// 1和2是朋友，2和1也是朋友。领接矩阵。
+// 时空复杂度：
+######时空复杂度：
+时间O(N^2)：2层循环
+######最优解法：
+```
+class Solution1 {
+public:
+    int findCircleNum(vector<vector<int>>& M) {
+        if (M.size() == 0) return 0;
+        int n = M.size();
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (!M[i][i]) continue;
+            ans++;
+            dfs(M, i, n);
+        }
+        return ans;
+    }
+private:
+    void dfs(vector<vector<int>>& M, int cur, int n) {
+        // terminate
+
+        // process
+        // drill down
+        for (int i = 0; i < n; i++) {
+            if (!M[cur][i]) continue;
+            M[cur][i] = M[i][cur] = 0;
+            dfs(M, i, n);
+        }
+        // reverse status
+    }
+
+};
+```
+######变形题：
+```
+```
+######其他：
+```
+```
