@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int numDecodings(string s) {
+        int n = s.size();
+        if (!n) return 0;
+        dp_ = vector<int>(n, -1);
+        return helper(s, 0, n - 1);
+    }
+private:
+    vector<int> dp_;
+
+    int helper(const string& s, int l, int r) {
+        // terminate
+        if (s[l] == '0') return 0;
+        if (l >= r) return 1;
+        if (dp_[l] != -1) return dp_[l];
+        // process
+        // drill down
+        int w = helper(s, l + 1, r);
+        int prefix = (s[l] - '0') * 10 + (s[l + 1] - '0');
+        if (prefix <= 26) {
+            w += helper(s, l + 2, r);
+        }
+        return dp_[l] = w;
+        // reverse status
+    }
+
+};
